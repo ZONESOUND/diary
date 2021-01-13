@@ -32,7 +32,7 @@ diaryRef.on('value', (snapshot)=>{
     for (i=diaries.length-2; i>=0; i--) {
         txt = toTxt(diaries[i]);
         if (last != "") {
-          $('#bb-bookblock').append(addPage(`<p>${last}</p>`, `<p>${txt}</p>`));
+          $('#bb-bookblock').append(addPage(`<p>${txt}</p>`, `<p>${last}</p>`));
           last = "";
         } else {
             last = txt;
