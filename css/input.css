@@ -1,0 +1,34 @@
+.bb-custom-side textarea {
+    font-family: 'Lato';
+    font-size: 1.8em;
+    font-weight: 300;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    margin: 6%;
+    border: none;
+    line-height: 1;
+    resize: none;
+}
+
+textarea:focus {
+    outline: none !important;
+    border: none;
+    /* box-shadow: 0 0 10px #719ECE; */
+}
+
+.bb-custom-side p {
+    width: 100%;
+}
+
+.date {
+    width: 100%;
+    text-align: right;
+    float: right;
+    font-size: 0.8em;
+}
+
+#send {
+    float: left;
+    font-size: 2.5em;
+}
