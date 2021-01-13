@@ -13,70 +13,52 @@ const databaseRef = firebase.database().ref();
 const diaryRef = databaseRef.child('diary');
 let diaries = [];
 
-
+$("#send").click(function() {
+    diaryRef.push(toJson($("#textarea").val()));
+    $("#textarea").val("");
+})
 
 diaryRef.on('value', (snapshot)=>{
     $(".new").remove();
+    $('#firstR').text("");
     let diariesVal = snapshot.val();
     let last = "";
     diaries = [];
     Object.entries(diariesVal).forEach((e)=>{
         diaries.push(e[1]);
     })
-    let i=0;
-    let txt = "";
-    if (diaries.length > 0) {
-        txt = toTxt(diaries[diaries.length-1]);
-    }
-    $('#bb-bookblock').append(addPage(`<p>${txt}</p>`, addTextArea(), 'last'));
-    for (i=diaries.length-2; i>=0; i--) {
-        txt = toTxt(diaries[i]);
+    if (diaries.length > 0) 
+        $('#firstR').html(toTxt(diaries[diaries.length-1]));
+    for (let i=diaries.length-2; i>=0; i--) {
+        let txt = toTxt(diaries[i]);
         if (last != "") {
-          $('#bb-bookblock').append(addPage(`<p>${last}</p>`, `<p>${txt}</p>`));
+          $('#bb-bookblock').append(addPage(last, txt));
           last = "";
         } else {
             last = txt;
         }
-    }
+    }    
     if (last != "")
-        $('#bb-bookblock').append(addPage("<p></p>", `<p>${last}</p>`,));
-    
-    textareaInit();
-    $("#send").click(function() {
-        if ($("#textarea").val() == "") return;
-        diaryRef.push(toJson($("#textarea").val()));
-        $("#textarea").val("");
-    })
+        $('#bb-bookblock').append(addPage(last, ""));
     Page.init();
-    // $(".new").css('display', 'none');
-    // $(".last").css('display', 'block');
-    
 })
 
 function toTxt(obj) {
-    return `${obj.text}<br><br><br><br>
-    <span class="diarysmall">${obj.name}</span>
-    <span class="diarysmall">${new Date(obj.time).toDateString()}</span>`;
+    return `${obj.text}<br><br><br><span class="date">${new Date(obj.time).toDateString()}</span>`;
 }
 
-function addPage(side1, side2, classname="") {
-    return `<div class="bb-item new ${classname}" style="display: block;">
+function addPage(txt1, txt2) {
+    return `<div class="bb-item new" style="display: block;">
         <div class="bb-custom-side">
-            ${side1}
+            <p>${txt1}</p>
         </div>
         <div class="bb-custom-side">
-            ${side2}
+            <p>${txt2}</p>
         </div>
     </div>`;
 }
 
-function addTextArea() {
-    return `<div>
-    <textarea id="textarea"
-    placeholder="write something..."></textarea>
-    <a id="send" href="#" class="bb-custom-icon"><i class="fa fa-floppy-o"></i></a>
-    </div>`;
-}
+
 
 function generateId() {
     return String.fromCharCode(Math.floor(Math.random()*25+ 65)) + Math.random().toString(10).substr(2, 3);

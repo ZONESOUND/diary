@@ -22,19 +22,6 @@
 			<div class="bb-custom-wrapper">
 				
 				<div id="bb-bookblock" class="bb-bookblock">
-					<div class="bb-item">
-						<div class="bb-custom-side">
-							<div>
-							<textarea id="textarea"
-							placeholder="write something..."></textarea>
-							<!-- <button id="send"><i class="fa fa-floppy-o"></i></button> -->
-							<a id="send" href="#" class="bb-custom-icon"><i class="fa fa-floppy-o"></i></a>
-							</div>
-						</div>
-						<div class="bb-custom-side">
-							<p id="firstR"></p>
-						</div>
-					</div>
 				</div>
 
 				<nav>
@@ -52,7 +39,7 @@
 		<script src="js/jquery.bookblock.js"></script>
 		<script>
 			var Page = (function() {
-				
+				var timeoutS = null;
 				var config = {
 						$bookBlock : $( '#bb-bookblock' ),
 						$navNext : $( '#bb-nav-next' ),
@@ -73,34 +60,40 @@
 						var $slides = config.$bookBlock.children();
 
 						// add navigation events
-						config.$navNext.on( 'click touchstart', function() {
-							config.$bookBlock.bookblock( 'next' );
-							return false;
-						} );
-
 						config.$navPrev.on( 'click touchstart', function() {
-							config.$bookBlock.bookblock( 'prev' );
+							config.$bookBlock.bookblock( 'next' );
+							checktimeout();
 							return false;
 						} );
 
-						config.$navFirst.on( 'click touchstart', function() {
-							config.$bookBlock.bookblock( 'first' );
+						config.$navNext.on( 'click touchstart', function() {
+							config.$bookBlock.bookblock( 'prev' );
+							checktimeout();
 							return false;
 						} );
 
 						config.$navLast.on( 'click touchstart', function() {
+							config.$bookBlock.bookblock( 'first' );
+							checktimeout();
+							return false;
+						} );
+
+						config.$navFirst.on( 'click touchstart', function() {
 							config.$bookBlock.bookblock( 'last' );
+							checktimeout();
 							return false;
 						} );
 						
 						// add swipe events
 						$slides.on( {
-							'swipeleft' : function( event ) {
+							'swiperight' : function( event ) {
 								config.$bookBlock.bookblock( 'next' );
+								checktimeout();
 								return false;
 							},
-							'swiperight' : function( event ) {
+							'swipeleft' : function( event ) {
 								config.$bookBlock.bookblock( 'prev' );
+								checktimeout();
 								return false;
 							}
 						} );
@@ -118,15 +111,23 @@
 							switch (keyCode) {
 								case arrow.left:
 									config.$bookBlock.bookblock( 'prev' );
+									checktimeout();
 									break;
 								case arrow.right:
 									config.$bookBlock.bookblock( 'next' );
+									checktimeout();
 									break;
 							}
 						} );
+					},
+					last = function() {
+						config.$bookBlock.bookblock( 'first' );
+					},
+					checktimeout = function() {
+						if (timeoutS) clearTimeout(timeoutS);
+						timeoutS = setTimeout(last, 120000);
 					};
-
-					return { init : init };
+					return { init : init, last: last };
 
 			})();
 		</script>

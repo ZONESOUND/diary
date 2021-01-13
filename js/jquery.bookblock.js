@@ -86,7 +86,7 @@
 		// vertical or horizontal flip
 		orientation : 'vertical',
 		// ltr (left to right) or rtl (right to left)
-		direction : 'ltr',
+		direction : 'rtl',
 		// speed for the flip transition in ms
 		speed : 1000,
 		// easing for the flip transition

@@ -21,7 +21,7 @@ textarea:focus {
     width: 100%;
 }
 
-.date {
+.diarysmall {
     width: 100%;
     text-align: right;
     float: right;
@@ -29,6 +29,6 @@ textarea:focus {
 }
 
 #send {
-    float: left;
+    float: right;
     font-size: 2.5em;
 }
